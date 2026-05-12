@@ -47,23 +47,31 @@ You will need to get your hands on a udetails.oab file that by default resides i
 The `udetails.oab` will be input to this script and it parses out SMTP,SIP,UPN and Phone numbers.
 
 ```
-usage: offline_address_book_extractor.py [-h] -i UDETAILSFILE [-o OUTFILE]
+usage: offline_address_book_extractor.py [-h] [-f {ndjson,csv}] [-o OUTPUT] [--preset {minimal,contact,full}] [--columns COLUMNS] [--list-presets] [--include-header] [--strict] [--stats] [--no-progress] [--no-banner] [-v] [input]
 
-Udetails.oab extractor
+Parse an uncompressed OAB v4 Full Details file (udetails.oab).
+
+positional arguments:
+  input                 Path to udetails.oab (omit with --list-presets)
 
 options:
   -h, --help            show this help message and exit
-  -i UDETAILSFILE, --udetailsfile UDETAILSFILE
-                        Path to udetails.oab file you want to parse
-  -o OUTFILE, --outfile OUTFILE
-                        Name of outfile from the export - Default is current directory\udetails_YYYMMDD_HHMMSS.csv
+  -f {ndjson,csv}, --format {ndjson,csv}
+                        Output format (default: ndjson)
+  -o OUTPUT, --output OUTPUT
+                        Output path (default: stdout)
+  --preset {minimal,contact,full}
+                        CSV column preset (default: contact). Ignored if --columns is given.
+  --columns COLUMNS     Ad-hoc comma-separated CSV column list (overrides --preset)
+  --list-presets        Print built-in CSV presets and exit
+  --include-header      Also emit the OAB header record as the first row
+  --strict              Fail on unknown PropIDs instead of warning + inferring type
+  --stats               Print header summary and exit without dumping records
+  --no-progress         Suppress the progress bar
+  --no-banner           Suppress the startup banner
+  -v, --verbose         Print final write-count summary to stderr
 ```
 
-Example output:
-```
-UPN:mail.user1@company.com,Phone:None,Smtp:{'SMTP:mail.user1@company.com', 'smtp:user1_alias@company.com'},Sip:None
-UPN:mail.user2@company.com,Phone:999-999-9999,Smtp:{'smtp:mail.user2@company.onmicrosoft.com', 'SMTP:mail,user2@company.com'},Sip:{'SIP:mail,user2@company.com'}
-```
 
 ### generate-udl.ps1
 A super simple PowerShellscript to generate UDL files. Takes a list of email addresses and outputs UDL files.
